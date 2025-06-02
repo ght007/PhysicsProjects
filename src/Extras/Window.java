@@ -5,6 +5,7 @@ import Pendulum.SinglePendulum;
 import SlidingBlock.BlockOnInclinedPlane;
 import Spring.SpringMassSystem;
 import PhysicsObjects.Block;
+import org.apache.commons.math3.analysis.function.Sin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,7 @@ public class Window {
     public static final int WIDTH = 600, HEIGHT = 400;
 
     public static void main(String[] args) {
-        springMass();
+
     }
 
     private static void doublePendulum() {
@@ -25,7 +26,7 @@ public class Window {
         window.setBackground(Color.BLACK);
         window.setSize(WIDTH, HEIGHT);
         window.setLocation(300, 300);
-        DoublePendulum pendulum1 = new DoublePendulum(1000, 1000, 100, 100, Math.PI / 2, Math.PI / 2);
+        DoublePendulum pendulum1 = DoublePendulum.createDefault();
         pendulum1.setFrictionCoefficient(0.00000001);
         window.add(pendulum1);
         window.setVisible(true);
@@ -35,7 +36,7 @@ public class Window {
         window2.setBackground(Color.BLACK);
         window2.setSize(WIDTH, HEIGHT);
         window2.setLocation(1000, 300);
-        DoublePendulum pendulum2 = new DoublePendulum(100, 100, 100, 100, Math.PI / 2, Math.PI / 2);
+        DoublePendulum pendulum2 = DoublePendulum.createDefault();
         pendulum2.setFrictionCoefficient(0);
         window2.add(pendulum2);
         window2.setVisible(true);
@@ -74,7 +75,7 @@ public class Window {
         window.setBackground(Color.BLACK);
         window.setSize(WIDTH, HEIGHT);
         window.setLocation(750, 300);
-        var pendulum = new SinglePendulum(100, 100, Math.PI / 2, 0);
+        var pendulum = SinglePendulum.createDefault();
         window.add(pendulum);
         window.setVisible(true);
 
@@ -94,8 +95,7 @@ public class Window {
     }
 
     private static void springMass() {
-        Block block = new Block(100, 200, 0, 48, 30);
-        SpringMassSystem springMassSystem = new SpringMassSystem(block, 100, 0.1, 0);
+        SpringMassSystem springMassSystem = SpringMassSystem.createDefault();
 
         JFrame window = new JFrame("Spring Mass System");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,8 +126,7 @@ public class Window {
         window.setBackground(Color.BLACK);
         window.setSize(WIDTH, HEIGHT);
         window.setLocation(750, 300);
-        Block block = new Block(100, 100, 300, 48, 30);
-        BlockOnInclinedPlane blockOnInclinedPlane = new BlockOnInclinedPlane(block, Math.PI / -4, block.x, 0);
+        BlockOnInclinedPlane blockOnInclinedPlane = BlockOnInclinedPlane.createDefault();
         window.add(blockOnInclinedPlane);
         window.setVisible(true);
 
