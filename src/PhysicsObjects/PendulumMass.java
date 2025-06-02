@@ -2,6 +2,9 @@ package PhysicsObjects;
 
 import java.util.Vector;
 
+/**
+ * A circular mass attached to an anchor point with a rod of length l
+ */
 public class PendulumMass {
     public final double mass;
 

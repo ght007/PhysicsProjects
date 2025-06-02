@@ -1,5 +1,8 @@
 package PhysicsObjects;
 
+/**
+ * A rectangular Block with mass
+ */
 public class Block {
 
     public final double mass;
