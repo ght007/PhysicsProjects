@@ -1,32 +1,21 @@
 package Pendulum;
 
+import Extras.Simulation;
 import PhysicsObjects.PendulumMass;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
 
-import static Extras.VectorExtras.addVectors;
-import static Extras.VectorExtras.scalarMultiply;
+import static Extras.Phyiscs.g;
+import static Solver.ODESolvers.RK4;
 
-public class DoublePendulum extends JPanel {
-    public static final double g = 9.81;
+public class DoublePendulum extends Simulation {
 
-    public int SPEED = 10;
-
-    public double h = 0.00005;
-
-    public double frictionCoefficient = 0;
-
-    public double mass1 = 1000, mass2 = 1000;
-
-    private double t = 100;
+    private double frictionCoefficient = 0;
 
     private PendulumMass m1, m2;
 
-    private Vector<Double> y_n = new Vector<>();
-
-    public DoublePendulum(double l1, double l2, double theta1, double theta2) {
+    public DoublePendulum(double mass1, double mass2, double l1, double l2, double theta1, double theta2) {
         m1 = new PendulumMass(mass1, l1 * Math.sin(theta1), l1 * Math.cos(theta1), l1, theta1, 10);
         m2 = new PendulumMass(mass2, m1.x + l2 * Math.sin(theta2), m1.y + l2 * Math.cos(theta2), l2, theta2, 10);
 
@@ -37,11 +26,11 @@ public class DoublePendulum extends JPanel {
     }
 
     public void updatePhysics() {
-        for(int i = 0; i <= SPEED; i++) {
-            y_n = RK4(t, y_n);
+        for(int i = 0; i <= simulationSpeed; i++) {
+            y_n = RK4(timestep, y_n, this::f_prime);
             updatePositions(y_n.getFirst(), y_n.get(2));
         }
-        t += h;
+        t += timestep;
         double totalEnergy = getTotalEnergy();
 
         if(totalEnergy < 50) {
@@ -49,16 +38,8 @@ public class DoublePendulum extends JPanel {
         }
     }
 
-    private Vector<Double> RK4(double dt, Vector<Double> y_n) {
-        Vector<Double> k1 = f_prime(y_n);
-        Vector<Double> k2 = f_prime(addVectors(y_n, (scalarMultiply(k1, h / 2))));
-        Vector<Double> k3 = f_prime(addVectors(y_n, (scalarMultiply(k2, h / 2))));
-        Vector<Double> k4 = f_prime(addVectors(y_n, (scalarMultiply(k3, h))));
-        Vector<Double> sum = addVectors(addVectors(k1, scalarMultiply(k2, 2)), addVectors(scalarMultiply(k3, 2), k4));
-        return addVectors(y_n, scalarMultiply(sum, h / 6));
-    }
-
-    private Vector<Double> f_prime(Vector<Double> f) {
+    @Override
+    protected Vector<Double> f_prime(Vector<Double> f) {
         Vector<Double> functions = new Vector<>();
         double y2 = f.get(1);
         double y4 = f.get(3);
@@ -84,7 +65,8 @@ public class DoublePendulum extends JPanel {
         return term1 - term2 * term3 - (frictionCoefficient) * f.get(3);
     }
 
-    private double getTotalEnergy() {
+    @Override
+    public double getTotalEnergy() {
         double T = 0.5 * m1.mass * m1.l * m1.l * Math.pow(y_n.get(1), 2)
             + 0.5 * m2.mass * (Math.pow(y_n.get(1) * m1.l, 2)
             + Math.pow(y_n.get(3) * m2.l, 2)
@@ -121,4 +103,11 @@ public class DoublePendulum extends JPanel {
         g.drawLine((int) m1.x, (int) m1.y, (int) m2.x, (int) m2.y);
     }
 
+    public double getFrictionCoefficient() {
+        return frictionCoefficient;
+    }
+
+    public void setFrictionCoefficient(double frictionCoefficient) {
+        this.frictionCoefficient = frictionCoefficient;
+    }
 }

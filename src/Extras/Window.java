@@ -10,14 +10,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.math.BigDecimal;
 
 public class Window {
 
     public static final int WIDTH = 600, HEIGHT = 400;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         springMass();
     }
 
@@ -27,8 +25,8 @@ public class Window {
         window.setBackground(Color.BLACK);
         window.setSize(WIDTH, HEIGHT);
         window.setLocation(300, 300);
-        DoublePendulum pendulum1 = new DoublePendulum(100, 100, Math.PI / 2, Math.PI / 2);
-        pendulum1.frictionCoefficient = 0.00000001;
+        DoublePendulum pendulum1 = new DoublePendulum(1000, 1000, 100, 100, Math.PI / 2, Math.PI / 2);
+        pendulum1.setFrictionCoefficient(0.00000001);
         window.add(pendulum1);
         window.setVisible(true);
 
@@ -37,8 +35,8 @@ public class Window {
         window2.setBackground(Color.BLACK);
         window2.setSize(WIDTH, HEIGHT);
         window2.setLocation(1000, 300);
-        DoublePendulum pendulum2 = new DoublePendulum(100, 100, Math.PI / 2, Math.PI / 2);
-        pendulum2.frictionCoefficient = 0;
+        DoublePendulum pendulum2 = new DoublePendulum(100, 100, 100, 100, Math.PI / 2, Math.PI / 2);
+        pendulum2.setFrictionCoefficient(0);
         window2.add(pendulum2);
         window2.setVisible(true);
 
@@ -70,13 +68,13 @@ public class Window {
         }
     }
 
-    private static void singlePendulum() throws IOException {
+    private static void singlePendulum() {
         JFrame window = new JFrame("Extras.Window");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setBackground(Color.BLACK);
         window.setSize(WIDTH, HEIGHT);
         window.setLocation(750, 300);
-        var pendulum = new SinglePendulum(100, Math.PI / 2, "D:/EigeneDateien/Documents/Filename.xlsx");
+        var pendulum = new SinglePendulum(100, 100, Math.PI / 2, 0);
         window.add(pendulum);
         window.setVisible(true);
 
@@ -86,11 +84,6 @@ public class Window {
             @Override
             public void windowClosing(WindowEvent e) {
                 closed[0] = true;
-                try {
-                    pendulum.excelWriter.writeDataToExcel(0);
-                } catch(IOException ex) {
-                    throw new RuntimeException(ex);
-                }
             }
         });
 
@@ -102,7 +95,7 @@ public class Window {
 
     private static void springMass() {
         Block block = new Block(100, 200, 0, 48, 30);
-        SpringMassSystem springMassSystem = new SpringMassSystem(block, 100,0.1, 0);
+        SpringMassSystem springMassSystem = new SpringMassSystem(block, 100, 0.1, 0);
 
         JFrame window = new JFrame("Spring Mass System");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
