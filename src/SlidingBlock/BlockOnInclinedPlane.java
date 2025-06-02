@@ -17,12 +17,20 @@ public class BlockOnInclinedPlane extends Simulation {
 
     private Block block;
 
-    public BlockOnInclinedPlane(Block block, double theta, double x0, double xdot0) {
+    /**
+     * Creates a BlockOnInclinedPlane object with default initial values for all parameters.
+     * TODO define default values concretely
+     */
+    public static BlockOnInclinedPlane createDefault() {
+        Block block = new Block(100, 100, 300, 48, 30);
+        return new BlockOnInclinedPlane(block, Math.PI / -4, block.x, 0);
+    }
+
+    public BlockOnInclinedPlane(Block block, double theta, double x, double xdot) {
         this.block = block;
         this.theta = theta;
-
-        y_n.add(x0);
-        y_n.add(xdot0);
+        y_n.add(x);
+        y_n.add(xdot);
     }
 
     @Override
@@ -80,7 +88,8 @@ public class BlockOnInclinedPlane extends Simulation {
         return frictionCoefficient;
     }
 
-    public void setFrictionCoefficient(double frictionCoefficient) {
+    public BlockOnInclinedPlane setFrictionCoefficient(double frictionCoefficient) {
         this.frictionCoefficient = frictionCoefficient;
+        return this;
     }
 }

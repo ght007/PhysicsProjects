@@ -12,25 +12,32 @@ import static Solver.ODESolvers.RK4;
 
 public class SpringMassSystem extends Simulation {
 
-    private double springConstant;
+    private double springConstant = 0.1;
 
-    private double frictionCoefficient;
+    private double frictionCoefficient = 0;
 
     private Block block;
 
     private final double L0;
 
     /**
+     * Creates a SpringMassSystem object with default initial values for all parameters.
+     * @apiNote Mass is set to 100, {@code block.x} to 200, equilibrium of the spring {@code L0} at 100, and initial velocity {@code xdot} at 0.
+     */
+    public static SpringMassSystem createDefault() {
+        Block block = new Block(100, 200, 0, 48, 30);
+        return new SpringMassSystem(block, 0, 100);
+    }
+
+    /**
      * @param block This blocks y-position will be overwritten to match the height of the spring
      */
-    public SpringMassSystem(Block block, double L0, double springConstant, double frictionCoefficient) {
+    public SpringMassSystem(Block block, double xdot, double L0) {
         this.block = block;
         block.y = -block.height / 2;
-        this.springConstant = springConstant;
-        this.frictionCoefficient = frictionCoefficient;
         this.L0 = L0;
         y_n.add(block.x);
-        y_n.add(0d);
+        y_n.add(xdot);
     }
 
     @Override
@@ -75,15 +82,17 @@ public class SpringMassSystem extends Simulation {
         return springConstant;
     }
 
-    public void setSpringConstant(double springConstant) {
+    public SpringMassSystem setSpringConstant(double springConstant) {
         this.springConstant = springConstant;
+        return this;
     }
 
     public double getFrictionCoefficient() {
         return frictionCoefficient;
     }
 
-    public void setFrictionCoefficient(double frictionCoefficient) {
+    public SpringMassSystem setFrictionCoefficient(double frictionCoefficient) {
         this.frictionCoefficient = frictionCoefficient;
+        return this;
     }
 }
