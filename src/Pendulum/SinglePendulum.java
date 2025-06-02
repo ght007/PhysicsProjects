@@ -2,6 +2,7 @@ package Pendulum;
 
 import Extras.Simulation;
 import PhysicsObjects.PendulumMass;
+import org.apache.commons.math3.analysis.function.Sin;
 
 import java.awt.*;
 import java.util.Vector;
@@ -11,17 +12,26 @@ import static Solver.ODESolvers.RK4;
 
 public class SinglePendulum extends Simulation {
 
-    private double frictionCoefficient;
+    private double frictionCoefficient = 0;
 
     private PendulumMass m;
 
-    public SinglePendulum(double mass, double l, double theta, double frictionCoefficient) {
-        m = new PendulumMass(mass, l * Math.sin(theta), l * Math.cos(theta), l, theta, 10);
-        this.frictionCoefficient = frictionCoefficient;
-        y_n.add(theta);
-        y_n.add(0d);
+    /**
+     * Creates a SinglePendulum object with default initial values for all parameters.
+     * @apiNote Mass and rod length is set to {@code 100}, the angle to {@code Math.PI / 2}, the angular velocity to {@code 0} .
+     * @return
+     */
+    public static SinglePendulum createDefault() {
+        return new SinglePendulum(100, 100, Math.PI / 2, 0);
     }
 
+    public SinglePendulum(double mass, double l, double theta, double thetadot) {
+        m = new PendulumMass(mass, l * Math.sin(theta), l * Math.cos(theta), l, theta, 10);
+        y_n.add(theta);
+        y_n.add(thetadot);
+    }
+
+    @Override
     protected Vector<Double> f_prime(Vector<Double> f) {
         Vector<Double> functions = new Vector<>();
         double y2 = f.get(1);
@@ -34,6 +44,7 @@ public class SinglePendulum extends Simulation {
         return (-g / m.l) * Math.sin(f.getFirst()) - (frictionCoefficient / (m.mass * m.l * m.l)) * f.getLast();
     }
 
+    @Override
     public void updatePhysics() {
         for(int i = 0; i <= simulationSpeed; i++) {
             y_n = RK4(timestep, y_n, this::f_prime);
@@ -70,7 +81,8 @@ public class SinglePendulum extends Simulation {
         return frictionCoefficient;
     }
 
-    public void setFrictionCoefficient(double frictionCoefficient) {
+    public SinglePendulum setFrictionCoefficient(double frictionCoefficient) {
         this.frictionCoefficient = frictionCoefficient;
+        return this;
     }
 }
