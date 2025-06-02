@@ -6,7 +6,7 @@ import PhysicsObjects.PendulumMass;
 import java.awt.*;
 import java.util.Vector;
 
-import static Extras.Phyiscs.g;
+import static Extras.Physics.g;
 import static Solver.ODESolvers.RK4;
 
 public class SinglePendulum extends Simulation {

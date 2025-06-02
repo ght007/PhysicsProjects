@@ -2,6 +2,9 @@ package Extras;
 
 import java.util.Vector;
 
+/**
+ * A helper class for operations on vectors
+ */
 public class VectorExtras {
     public static Vector<Double> addVectors(Vector<Double> a, Vector<Double> b) {
         if(a.size() != b.size()) {
@@ -22,4 +25,6 @@ public class VectorExtras {
         }
         return result;
     }
+
+    // TODO implement dot product, cross product and eventually matrix multiplication
 }

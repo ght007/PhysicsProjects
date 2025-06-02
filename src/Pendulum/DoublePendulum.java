@@ -6,7 +6,7 @@ import PhysicsObjects.PendulumMass;
 import java.awt.*;
 import java.util.Vector;
 
-import static Extras.Phyiscs.g;
+import static Extras.Physics.g;
 import static Solver.ODESolvers.RK4;
 
 public class DoublePendulum extends Simulation {
@@ -15,16 +15,25 @@ public class DoublePendulum extends Simulation {
 
     private PendulumMass m1, m2;
 
-    public DoublePendulum(double mass1, double mass2, double l1, double l2, double theta1, double theta2) {
+    /**
+     * Creates a DoublePendulum object with default initial values for all parameters.
+     * @apiNote Masses and rod lengths are set to {@code 100}, angles are to {@code Math.PI / 2} and angular velocity to {@code 0}.
+     */
+    public static DoublePendulum createDefault() {
+        return new DoublePendulum(100, 100, 100, 100, Math.PI / 2, Math.PI / 2, 0, 0);
+    }
+
+    public DoublePendulum(double mass1, double mass2, double l1, double l2, double theta1, double theta2, double theta1dot, double theta2dot) {
         m1 = new PendulumMass(mass1, l1 * Math.sin(theta1), l1 * Math.cos(theta1), l1, theta1, 10);
         m2 = new PendulumMass(mass2, m1.x + l2 * Math.sin(theta2), m1.y + l2 * Math.cos(theta2), l2, theta2, 10);
 
         y_n.add(theta1);
-        y_n.add(0d);
+        y_n.add(theta1dot);
         y_n.add(theta2);
-        y_n.add(0d);
+        y_n.add(theta2dot);
     }
 
+    @Override
     public void updatePhysics() {
         for(int i = 0; i <= simulationSpeed; i++) {
             y_n = RK4(timestep, y_n, this::f_prime);
@@ -107,7 +116,8 @@ public class DoublePendulum extends Simulation {
         return frictionCoefficient;
     }
 
-    public void setFrictionCoefficient(double frictionCoefficient) {
+    public DoublePendulum setFrictionCoefficient(double frictionCoefficient) {
         this.frictionCoefficient = frictionCoefficient;
+        return this;
     }
 }

@@ -7,7 +7,7 @@ import Extras.Simulation;
 import Extras.Window;
 import PhysicsObjects.Block;
 
-import static Extras.Phyiscs.g;
+import static Extras.Physics.g;
 import static Solver.ODESolvers.RK4;
 
 public class SpringMassSystem extends Simulation {
