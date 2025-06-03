@@ -2,10 +2,10 @@ package Extras;
 
 import Pendulum.DoublePendulum;
 import Pendulum.SinglePendulum;
+import Pendulum.SpringPendulum;
 import SlidingBlock.BlockOnInclinedPlane;
 import Spring.SpringMassSystem;
 import PhysicsObjects.Block;
-import org.apache.commons.math3.analysis.function.Sin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,7 @@ public class Window {
     public static final int WIDTH = 600, HEIGHT = 400;
 
     public static void main(String[] args) {
-
+        springMass();
     }
 
     private static void doublePendulum() {
@@ -75,7 +75,7 @@ public class Window {
         window.setBackground(Color.BLACK);
         window.setSize(WIDTH, HEIGHT);
         window.setLocation(750, 300);
-        var pendulum = SinglePendulum.createDefault();
+        var pendulum = SpringPendulum.createDefault();
         window.add(pendulum);
         window.setVisible(true);
 

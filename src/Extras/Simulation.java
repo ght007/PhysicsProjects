@@ -13,7 +13,7 @@ public abstract class Simulation extends JPanel {
     /**
      * Timestep used for physics simulation.
      */
-    protected double timestep = 0.001;
+    protected double timestep = 0.0001;
 
     /**
      * Keeps track of total time elapsed in the simulation.

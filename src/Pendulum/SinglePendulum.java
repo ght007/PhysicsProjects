@@ -2,7 +2,6 @@ package Pendulum;
 
 import Extras.Simulation;
 import PhysicsObjects.PendulumMass;
-import org.apache.commons.math3.analysis.function.Sin;
 
 import java.awt.*;
 import java.util.Vector;

@@ -10,7 +10,7 @@ public class PendulumMass {
 
     public final double r;
 
-    public final double l;
+    public double l;
 
     public double x, y;
 
